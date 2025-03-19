@@ -66,7 +66,7 @@ class ListCreateAlbumView(APIView):
 
     def post(self, request):
         try:
-            data = request.data.copy()
+            data = request.data
             album_picture = request.FILES.get('album_picture', None)
             serializer = AlbumSerializer(data=data)
             if serializer.is_valid():
