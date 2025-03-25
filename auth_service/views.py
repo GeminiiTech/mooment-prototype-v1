@@ -15,11 +15,13 @@ from google.auth.transport import requests as google_requests
 
 from .serializer import (
     MyTokenObtainPairSerializer,
+    SendPasswordResetLinkSerializer,
     RegisterSerializer,
     UserSerializer,
     SignInWithGoogleSerializer,
     SendEmailVerificationSerializer,
-    VerifyEmailSerializer
+    VerifyEmailSerializer,
+    VerifyNewPasswordSerializer
 )
 from .models import MyUser
 
@@ -223,3 +225,20 @@ class GoogleSignInView(GenericAPIView):
                 {"error": "Internal server error. Please try again later."},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
+class SendPasswordResetLinkView(APIView):
+    serializer_class = SendPasswordResetLinkSerializer
+
+    def post(self, request):
+        serializer = SendPasswordResetLinkSerializer(data=request.data)
+        if serializer.is_valid():
+            return Response({"message": "Password reset link sent to email."}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class VerifyNewPasswordView(APIView):
+    serializer_class = VerifyNewPasswordSerializer
+    def post(self, request):
+        serializer = VerifyNewPasswordSerializer(data=request.data)
+        if serializer.is_valid():
+            return Response({"message": "Password has been reset successfully."}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

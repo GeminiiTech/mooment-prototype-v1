@@ -24,7 +24,7 @@ class Album(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     albumId = models.CharField(max_length=6, unique=True)
     event_date = models.DateField(null=True, blank=True)
-    visibility = models.CharField(max_length=7, choices=[('public', 'Public'), ('private', 'Private')], default='private')
+    event_type = models.CharField(max_length=100, default='No event type provided')
     album_picture = models.ImageField(upload_to='albums-pictures/', null=True, blank=True)
     
     def save(self, *args, **kwargs):

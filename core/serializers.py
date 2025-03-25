@@ -16,6 +16,6 @@ class AlbumSerializer(serializers.ModelSerializer):
     organizer = UserSerializer(read_only=True)
     class Meta:
         model = Album
-        fields = ['id', 'organizer', 'title','description','visibility', 'created_at', 'albumId', 'images','album_picture']
+        fields = ['id', 'organizer', 'title','description','event_type','event_date', 'created_at', 'albumId', 'images','album_picture']
         read_only_fields = ['albumId', 'created_at'] 
 

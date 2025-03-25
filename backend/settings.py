@@ -209,6 +209,8 @@ REST_FRAMEWORK = {
 	
 SPECTACULAR_SETTINGS = {
 		"TITLE": "Mooment API",
+        "DESCRIPTION": "API documentation for the Mooment project.",
+        "VERSION": "1.0.0",
 	}
 
 SIMPLE_JWT = {
