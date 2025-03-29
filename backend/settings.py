@@ -261,23 +261,23 @@ STATIC_URL = 'static/'
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-# EMAIL_HOST = "smtp.gmail.com"
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER") 
-# EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
-
-# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
-EMAIL_PORT = 465  # Use 587 if using TLS, but for SSL use 465
-EMAIL_USE_SSL = True  # Set to True because your working test used SMTP_SSL
-EMAIL_USE_TLS = False  # Set to False since SSL is being used
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")  
-EMAIL_HOST_PASSWORD =  os.getenv("EMAIL_HOST_PASSWORD")  #App password generated from your gmail account
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER") 
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# EMAIL_HOST = "smtp.gmail.com"
+# EMAIL_PORT = 465  # Use 587 if using TLS, but for SSL use 465
+# EMAIL_USE_SSL = True  # Set to True because your working test used SMTP_SSL
+# EMAIL_USE_TLS = False  # Set to False since SSL is being used
+# EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")  
+# EMAIL_HOST_PASSWORD =  os.getenv("EMAIL_HOST_PASSWORD")  #App password generated from your gmail account
+# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
 # AWS S3
