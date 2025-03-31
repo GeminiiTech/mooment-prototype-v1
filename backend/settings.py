@@ -101,33 +101,12 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',  # MySQL database engine
-#         'NAME': 'mooment2',         # Database name
-#         'USER': 'root',              # Database user
-#         'PASSWORD': 'etty123kenny',          # Database password
-#         'HOST': 'localhost',                  # Database host (use '127.0.0.1' for local)
-#         'PORT': '3306',                       # MySQL port (default is 3306)
-#     }
-# }
-
 DATABASES = {
     'default': dj_database_url.config(
         default=os.getenv('DATABASE_URL'),
         conn_max_age=600,  # Keeps connections open for better performance
     )
 }
-
 
 
 # Password validation
@@ -259,7 +238,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATIC_URL = 'static/'
 
-CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS").split(",")
 
 # Gmail OAuth Email Configuration
 EMAIL_BACKEND = "auth_service.email_logic.GmailOAuth2EmailBackend"  # Update with actual import path
@@ -276,20 +256,7 @@ GMAIL_REFRESH_TOKEN = os.getenv("GMAIL_REFRESH_TOKEN", "")  # Initially empty
 # EMAIL_USE_TLS = True
 # EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER") 
 # EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
-
 # DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-
-# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-# EMAIL_HOST = "smtp.gmail.com"
-# EMAIL_PORT = 465  # Use 587 if using TLS, but for SSL use 465
-# EMAIL_USE_SSL = True  # Set to True because your working test used SMTP_SSL
-# EMAIL_USE_TLS = False  # Set to False since SSL is being used
-# EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")  
-# EMAIL_HOST_PASSWORD =  os.getenv("EMAIL_HOST_PASSWORD")  #App password generated from your gmail account
-# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-
-
-
 
 # AWS S3
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
