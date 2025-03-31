@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.utils.timezone import now
+from datetime import timedelta
 
 # Create your CustomUserManager here
 class CustomUserManager(BaseUserManager):
@@ -57,3 +59,26 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = 'MyUser'
         verbose_name_plural = 'MyUsers'
+
+
+class GoogleOAuthToken(models.Model):
+    """Stores OAuth tokens for Gmail API authentication."""
+    user = models.OneToOneField(MyUser, on_delete=models.CASCADE, related_name="google_oauth_token")
+    access_token = models.CharField(max_length=500)
+    refresh_token = models.CharField(max_length=500)
+    token_expiry = models.DateTimeField()
+
+    def is_expired(self):
+        """Check if the token is expired."""
+        return self.token_expiry <= now()
+
+    def update_tokens(self, access_token, refresh_token, expiry_seconds):
+        """Update the access token, refresh token, and expiry time."""
+        self.access_token = access_token
+        if refresh_token:  # Only update if a new refresh token is provided
+            self.refresh_token = refresh_token
+        self.token_expiry = now() + timedelta(seconds=expiry_seconds)
+        self.save()
+
+    def __str__(self):
+        return f"Google OAuth Token for {self.user.email}"
