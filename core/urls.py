@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import AlbumDetailView, ImageUploadView,DeleteUpdateAlbumView,ListAllAlbumView,ListCreateAlbumView
+from .views import AlbumDetailView, ImageUploadView,DeleteUpdateAlbumView,ListAllAlbumView,ListCreateAlbumView,ViewAlbumImageView
 
 urlpatterns = [
 
@@ -12,4 +12,5 @@ urlpatterns = [
 
     #Endpoint to post image to an album
     path('upload-image/<str:album_id>/', ImageUploadView.as_view(), name='album'),
+    path('view-album-images/<str:albumId>/', ViewAlbumImageView.as_view(), name='view-album-images'),
 ]

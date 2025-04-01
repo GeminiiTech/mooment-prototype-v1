@@ -151,3 +151,17 @@ class ImageUploadView(APIView):
                 # Optionally: Continue processing other files or break out
 
         return Response({"images": created_images}, status=status.HTTP_201_CREATED)
+
+class ViewAlbumImageView(APIView):
+    def get(self,request,albumId):
+        try:
+            album = Album.objects.get(albumId=albumId)
+            images = album.image_set.all()
+            serializer = ImageSerializer(images, many=True) 
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Album.DoesNotExist:
+            logger.info("Album with albumId %s not found for image retrieval.", albumId)
+            return Response({"error": "Album not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            logger.error("Error retrieving images for album %s: %s", albumId, str(e), exc_info=True)
+            return Response({"error": "Internal server error."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
