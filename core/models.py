@@ -3,6 +3,9 @@ import random
 import os
 from uuid import uuid4
 from auth_service.models import MyUser
+from django.core.files.storage import default_storage
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 
 # Create your models here.
 
@@ -38,6 +41,12 @@ class Album(models.Model):
             if not Album.objects.filter(albumId=albumId).exists():  # Ensure it's unique
                 return albumId
 
+    def delete(self, *args, **kwargs):
+        """ Delete the album picture from S3 before deleting the Album instance """
+        if self.album_picture:
+            default_storage.delete(self.album_picture.name)
+        super().delete(*args, **kwargs)        
+
     def __str__(self):
         return self.title
     
@@ -61,3 +70,20 @@ class Image(models.Model):
             
     def __str__(self):
         return self.image_url.url 
+    
+    def delete(self, *args, **kwargs):
+        """ Delete the image file from S3 when the Image instance is deleted """
+        if self.image_url:
+            default_storage.delete(self.image_url.name)
+        super().delete(*args, **kwargs)
+        
+
+# 🔥 Automatically delete all images related to an album when the album is deleted
+@receiver(post_delete, sender=Album)
+def delete_related_images(sender, instance, **kwargs):
+    """ Deletes all images associated with the deleted album from S3 """
+    images = Image.objects.filter(album=instance)
+    for image in images:
+        if image.image_url:
+            default_storage.delete(image.image_url.name)
+        image.delete()
