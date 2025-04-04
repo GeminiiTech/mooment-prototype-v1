@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 class AlbumDetailView(APIView):
     serializer_class = AlbumSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     """
     API view to get a specific album.
@@ -165,3 +165,4 @@ class ViewAlbumImageView(APIView):
         except Exception as e:
             logger.error("Error retrieving images for album %s: %s", albumId, str(e), exc_info=True)
             return Response({"error": "Internal server error."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        

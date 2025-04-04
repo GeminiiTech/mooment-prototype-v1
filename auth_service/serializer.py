@@ -7,6 +7,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.urls import reverse
 from django.utils.encoding import force_str
+from .email_service import send_email
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -76,6 +77,11 @@ class SendPasswordResetLinkSerializer(serializers.Serializer):
             recipient_list=[value],
             fail_silently=False,
         )
+        # send_email(
+        #     to_email=value,
+        #     subject="Reset Password for your Moooments account",
+        #     html_content=f"Click the link to reset your password: /n {reset_url}"
+        # )
         return value
     
 class VerifyNewPasswordSerializer(serializers.Serializer):
